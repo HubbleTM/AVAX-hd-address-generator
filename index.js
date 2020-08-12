@@ -7,17 +7,25 @@ const AVAX_ACCOUNT_PATH = `m/44'/9000'/0'`;
 
 try{
     prompt.start();
+    console.log();
     console.log("How many addresses do you want to generate?")
     prompt.get(['num_addr'], (err, result) => {
         let addrNum = parseInt(result.num_addr);
         console.log("\nEnter your mnemonic phrase:")
         prompt.get(['mnemonic'], (err, result) => {
-            let mnemonic = result.mnemonic;
+            let mnemonic = result.mnemonic.trim();
+            let words = mnemonic.split(' ');
+
+            if(words.length !== 24){
+                console.error('Invalid mnemonic phrase.')
+                return;
+            }
             let addresses = generateAddresses(mnemonic, addrNum);
             console.log('\n');
             for(var i=0; i<addresses.length; i++){
                 console.log(`${i}:\t${addresses[i]}`);
             }
+            console.log();
         });
     })
 }catch(e){
