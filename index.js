@@ -26,7 +26,8 @@ try{
 
 
 function generateAddresses(mnemonicIn, num){
-    let keychain = new Avalanche.AVMKeyChain('X');
+    let hrp = Avalanche.getPreferredHRP(1);
+    let keychain = new Avalanche.AVMKeyChain(hrp,'X');
 
     let mnemonic = mnemonicIn.trim();
     const seed = bip39.mnemonicToSeedSync(mnemonic)
