@@ -11,16 +11,27 @@ try{
     console.log("How many addresses do you want to generate?")
     prompt.get(['num_addr'], (err, result) => {
         let addrNum = parseInt(result.num_addr);
+        // Entered invalid number
+        if(!addrNum){
+            console.error('Invalid number.')
+            return;
+        }
         console.log("\nEnter your mnemonic phrase:")
         prompt.get(['mnemonic'], (err, result) => {
             let mnemonic = result.mnemonic.trim();
-            let words = mnemonic.split(' ');
+
+            let words = mnemonic.split(' ').filter(word => {
+                return !(word==='');
+            });
 
             if(words.length !== 24){
-                console.error('Invalid mnemonic phrase.')
+                console.error('The mnemonic phrase is not valid. Please make sure it has 24 words.')
                 return;
             }
-            let addresses = generateAddresses(mnemonic, addrNum);
+
+            let cleanMnemonic = words.join(' ');
+            let addresses = generateAddresses(cleanMnemonic, addrNum);
+
             console.log('\n');
             for(var i=0; i<addresses.length; i++){
                 console.log(`${i}:\t${addresses[i]}`);
