@@ -1,4 +1,4 @@
-var prompt = require('prompt');
+let prompt = require('prompt');
 const HDKey = require('hdkey');
 const bip39 = require('bip39');
 const Buffer = require('buffer/').Buffer;
@@ -17,7 +17,10 @@ try{
             return;
         }
         console.log("\nEnter your mnemonic phrase:")
-        prompt.get(['mnemonic'], (err, result) => {
+        prompt.get([{
+            name: 'mnemonic',
+            hidden: true
+          }], (err, result) => {
             let mnemonic = result.mnemonic.trim();
 
             let words = mnemonic.split(' ').filter(word => {
@@ -33,7 +36,7 @@ try{
             let addresses = generateAddresses(cleanMnemonic, addrNum);
 
             console.log('\n');
-            for(var i=0; i<addresses.length; i++){
+            for(let i=0; i<addresses.length; i++){
                 console.log(`${i}:\t${addresses[i]}`);
             }
             console.log();
@@ -53,7 +56,7 @@ function generateAddresses(mnemonicIn, num){
     const hdkey = HDKey.fromMasterSeed(seed)
 
     let keys = [];
-    for(var i=0; i<num; i++){
+    for(let i=0; i<num; i++){
         let derivationPath = `${AVAX_ACCOUNT_PATH}/0/${i}`;
         let key = hdkey.derive(derivationPath)
         keys.push(key);
